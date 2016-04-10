@@ -1,0 +1,32 @@
+{
+  "name": "angular-foundation-6",
+  "version": "0.0.1",
+  "homepage": "https://github.com/circlingthesun/angular-foundation-6",
+
+  "authors": [
+    "Micah Williamson <micahwllmsn@gmail.com>"
+  ],
+  "description": "Angular module for foundation 6 components",
+  "main": [
+    "dist/mm-foundation-0.9.12.min.js",
+    "dist/mm-foundation-tpls-0.9.12.min.js"
+  ],
+  "dependencies": {
+    "angular": "~1.5.0"
+  },
+  "moduleType": [],
+  "keywords": [
+    "angular",
+    "foundation",
+    "6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ]
+}
