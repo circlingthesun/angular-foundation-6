@@ -21,7 +21,7 @@ angular.module('mm.foundation.buttons', [])
 
             //model -> UI
             ngModelCtrl.$render = function() {
-                element.toggleClass(buttonsCtrl.deactiveClass, angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.btnRadio)));
+                element.toggleClass(buttonsCtrl.deactiveClass, !angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.btnRadio)));
             };
 
             //ui->model
