@@ -67,7 +67,7 @@ angular.module('mm.foundation.buttons', [])
             //ui->model
             element.bind(buttonsCtrl.toggleEvent, function() {
                 scope.$apply(function() {
-                    ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.deactiveClass) ? getFalseValue() : getTrueValue());
+                    ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.deactiveClass) ? getTrueValue() : getFalseValue());
                     ngModelCtrl.$render();
                 });
             });

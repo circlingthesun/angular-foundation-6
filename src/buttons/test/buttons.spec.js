@@ -111,7 +111,7 @@ describe('buttons', function () {
     });
 
     //UI->model
-    it('should work correctly set hollow class based on model', function () {
+    it('should work correctly set hollow class based on ui', function () {
       var btns = compileButtons('<button ng-model="model" btn-radio="1">click1</button><button ng-model="model" btn-radio="2">click2</button>', $scope);
       expect($scope.model).toBeUndefined();
 
