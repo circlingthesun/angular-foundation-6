@@ -1,12 +1,12 @@
 angular.module('mm.foundation.buttons', [])
 
 .constant('buttonConfig', {
-    deactiveClass: 'hollow',
+    activeClass: 'hollow',
     toggleEvent: 'click'
 })
 
 .controller('ButtonsController', ['buttonConfig', function(buttonConfig) {
-    this.deactiveClass = buttonConfig.deactiveClass;
+    this.activeClass = buttonConfig.activeClass;
     this.toggleEvent = buttonConfig.toggleEvent;
 }])
 
@@ -21,12 +21,12 @@ angular.module('mm.foundation.buttons', [])
 
             //model -> UI
             ngModelCtrl.$render = function() {
-                element.toggleClass(buttonsCtrl.deactiveClass, !angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.btnRadio)));
+                element.toggleClass(buttonsCtrl.activeClass, !angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.btnRadio)));
             };
 
             //ui->model
             element.bind(buttonsCtrl.toggleEvent, function() {
-                if (element.hasClass(buttonsCtrl.deactiveClass)) {
+                if (element.hasClass(buttonsCtrl.activeClass)) {
                     scope.$apply(function() {
                         ngModelCtrl.$setViewValue(scope.$eval(attrs.btnRadio));
                         ngModelCtrl.$render();
@@ -61,13 +61,13 @@ angular.module('mm.foundation.buttons', [])
 
             //model -> UI
             ngModelCtrl.$render = function() {
-                element.toggleClass(buttonsCtrl.deactiveClass, angular.equals(ngModelCtrl.$modelValue, getFalseValue()));
+                element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, getFalseValue()));
             };
 
             //ui->model
             element.bind(buttonsCtrl.toggleEvent, function() {
                 scope.$apply(function() {
-                    ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.deactiveClass) ? getTrueValue() : getFalseValue());
+                    ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.activeClass) ? getTrueValue() : getFalseValue());
                     ngModelCtrl.$render();
                 });
             });
