@@ -26,7 +26,7 @@ angular.module('mm.foundation.buttons', [])
 
             //ui->model
             element.bind(buttonsCtrl.toggleEvent, function() {
-                if (!element.hasClass(buttonsCtrl.deactiveClass)) {
+                if (element.hasClass(buttonsCtrl.deactiveClass)) {
                     scope.$apply(function() {
                         ngModelCtrl.$setViewValue(scope.$eval(attrs.btnRadio));
                         ngModelCtrl.$render();
