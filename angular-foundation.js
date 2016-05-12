@@ -677,9 +677,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.mediaQueries'])
                 fixedPositiong = false;
             }
         }
-        if (fixedPositiong) {
-            body.addClass(OPENED_MODAL_CLASS);
-        } else {
+        if (!fixedPositiong) {
             body.removeClass(OPENED_MODAL_CLASS);
         }
     }
