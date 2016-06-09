@@ -9,7 +9,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * angular-foundation-6
  * http://circlingthesun.github.io/angular-foundation-6/
 
- * Version: 0.9.35 - 2016-06-04
+ * Version: 0.9.36 - 2016-06-09
  * License: MIT
  * (c) 
  */
@@ -278,7 +278,8 @@ angular.module('mm.foundation.dropdownMenu', []).directive('dropdownMenu', ['$co
     return {
         bindToController: {
             disableHover: '=',
-            disableClickOpen: '='
+            disableClickOpen: '=',
+            closingTime: '='
         },
         scope: {},
         restrict: 'A',
@@ -287,63 +288,72 @@ angular.module('mm.foundation.dropdownMenu', []).directive('dropdownMenu', ['$co
             'ngInject';
 
             var vm = this;
-            // $element is-dropdown-submenu-parent
         }]
     };
-}]).directive('li', function () {
-    return {
+}]).directive('li', ['$timeout', dropdownMenuItem]);
+
+dropdownMenuItem.$inject = ['$timeout'];
+
+function dropdownMenuItem($timeout) {
+    var directive = {
         require: '?^^dropdownMenu',
         restrict: 'E',
-        link: function link($scope, $element, $attrs, dropdownMenu) {
-            if (!dropdownMenu) {
-                return;
-            }
+        link: link
+    };
 
-            var ulChild = null;
-            var children = $element[0].children;
+    return directive;
 
-            for (var i = 0; i < children.length; i++) {
-                var child = angular.element(children[i]);
-                if (child[0].nodeName === 'UL' && child.hasClass('menu')) {
-                    ulChild = child;
-                }
-            }
+    function link($scope, $element, $attrs, dropdownMenu) {
+        if (!dropdownMenu) {
+            return;
+        }
 
-            var topLevel = $element.parent()[0].hasAttribute('dropdown-menu');
-            if (!topLevel) {
-                $element.addClass('is-submenu-item');
-            }
+        var ulChild = null;
+        var children = $element[0].children;
 
-            if (ulChild) {
-                ulChild.addClass('is-dropdown-submenu menu submenu vertical');
-                $element.addClass('is-dropdown-submenu-parent opens-right');
-
-                if (topLevel) {
-                    ulChild.addClass('first-sub');
-                }
-
-                if (!dropdownMenu.disableHover) {
-                    $element.on('mouseenter', function () {
-                        ulChild.addClass('js-dropdown-active');
-                        $element.addClass('is-active');
-                    });
-                }
-
-                $element.on('click', function () {
-                    ulChild.addClass('js-dropdown-active');
-                    $element.addClass('is-active');
-                    // $element.attr('data-is-click', 'true');
-                });
-
-                $element.on('mouseleave', function () {
-                    ulChild.removeClass('js-dropdown-active');
-                    $element.removeClass('is-active');
-                });
+        for (var i = 0; i < children.length; i++) {
+            var child = angular.element(children[i]);
+            if (child[0].nodeName === 'UL' && child.hasClass('menu')) {
+                ulChild = child;
             }
         }
-    };
-});
 
+        var topLevel = $element.parent()[0].hasAttribute('dropdown-menu');
+        if (!topLevel) {
+            $element.addClass('is-submenu-item');
+        }
+
+        if (ulChild) {
+            ulChild.addClass('is-dropdown-submenu menu submenu vertical');
+            $element.addClass('is-dropdown-submenu-parent opens-right');
+
+            if (topLevel) {
+                ulChild.addClass('first-sub');
+            }
+
+            if (!dropdownMenu.disableHover) {
+                $element.on('mouseenter', function () {
+                    $element.parent().children().children().removeClass('js-dropdown-active');
+                    ulChild.addClass('js-dropdown-active');
+                    $element.addClass('is-active');
+                });
+            }
+
+            $element.on('click', function () {
+                ulChild.addClass('js-dropdown-active');
+                $element.addClass('is-active');
+                // $element.attr('data-is-click', 'true');
+            });
+
+            $element.on('mouseleave', function () {
+                $timeout(function () {
+                    ulChild.removeClass('js-dropdown-active');
+                    $element.removeClass('is-active');
+                }, dropdownMenu.closingTime ? dropdownMenu.closingTime : 500);
+            });
+        }
+    }
+}
 function DropdownToggleController($scope, $attrs, mediaQueries, $element, $position) {
     'ngInject';
 
