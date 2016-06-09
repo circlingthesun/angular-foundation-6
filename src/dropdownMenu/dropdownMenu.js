@@ -4,8 +4,7 @@ angular.module('mm.foundation.dropdownMenu', [])
     return {
         bindToController: {
             disableHover: '=',
-            disableClickOpen: '=',
-            closingTime: '='
+            disableClickOpen: '='
         },
         scope: {},
         restrict: 'A',
@@ -13,70 +12,62 @@ angular.module('mm.foundation.dropdownMenu', [])
         controller: function($scope, $element) {
             'ngInject';
             var vm = this;
+            // $element is-dropdown-submenu-parent
         }
     };
 })
-.directive('li', ['$timeout', dropdownMenuItem]);
-
-dropdownMenuItem.$inject = ['$timeout'];
-
-function dropdownMenuItem($timeout){
-    var directive = {
+.directive('li', () => {
+    return {
         require: '?^^dropdownMenu',
         restrict: 'E',
-        link: link
-    };
-
-    return directive;
-
-    function link($scope, $element, $attrs, dropdownMenu){
-        if(!dropdownMenu){
-            return;
-        }
-
-        let ulChild = null;
-        let children = $element[0].children;
-
-        for(let i = 0; i < children.length; i++){
-            let child = angular.element(children[i]);
-            if(child[0].nodeName === 'UL' && child.hasClass('menu')){
-                ulChild = child;
-            }
-        }
-
-        let topLevel = $element.parent()[0].hasAttribute('dropdown-menu');
-        if(!topLevel){
-            $element.addClass('is-submenu-item');
-        }
-
-        if(ulChild){
-            ulChild.addClass('is-dropdown-submenu menu submenu vertical');
-            $element.addClass('is-dropdown-submenu-parent opens-right');
-
-            if(topLevel){
-                ulChild.addClass('first-sub');
+        link: function($scope, $element, $attrs, dropdownMenu){
+            if(!dropdownMenu){
+                return;
             }
 
-            if(!dropdownMenu.disableHover){
-                $element.on('mouseenter', () => {
-                    $element.parent().children().children().removeClass('js-dropdown-active');
+            let ulChild = null;
+            let children = $element[0].children;
+
+            for(let i = 0; i < children.length; i++){
+                let child = angular.element(children[i]);
+                if(child[0].nodeName === 'UL' && child.hasClass('menu')){
+                    ulChild = child;
+                }
+            }
+
+            let topLevel = $element.parent()[0].hasAttribute('dropdown-menu');
+            if(!topLevel){
+                $element.addClass('is-submenu-item');
+            }
+
+            if(ulChild){
+                ulChild.addClass('is-dropdown-submenu menu submenu vertical');
+                $element.addClass('is-dropdown-submenu-parent opens-right');
+
+                if(topLevel){
+                    ulChild.addClass('first-sub');
+                }
+
+
+                if(!dropdownMenu.disableHover){
+                    $element.on('mouseenter', () => {
+                        ulChild.addClass('js-dropdown-active');
+                        $element.addClass('is-active');
+
+                    });
+                }
+
+                $element.on('click', () => {
                     ulChild.addClass('js-dropdown-active');
                     $element.addClass('is-active');
+                    // $element.attr('data-is-click', 'true');
                 });
-            }
 
-            $element.on('click', () => {
-                ulChild.addClass('js-dropdown-active');
-                $element.addClass('is-active');
-                // $element.attr('data-is-click', 'true');
-            });
-
-            $element.on('mouseleave', () => {
-                $timeout(function(){
+                $element.on('mouseleave', () => {
                     ulChild.removeClass('js-dropdown-active');
                     $element.removeClass('is-active');
-                }, dropdownMenu.closingTime ? dropdownMenu.closingTime : 500);
-            });
+                });
+            }
         }
-    }
-}
+    };
+});

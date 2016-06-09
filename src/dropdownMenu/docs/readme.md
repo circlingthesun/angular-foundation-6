@@ -6,6 +6,5 @@ The following settings can be applied as attributes to the root element with the
 
 - `disable-hover`: A mouse hover event will no open the root menu.
 - `disable-click-open`: Click events will not open menus, only hover (not implemented yet).
-- `closing-time`: Amount of time to delay closing a menu on a mouseleave event. Default of 500ms.
 
 See the demo page for example on how to use this and visit the [Foundation docs](http://foundation.zurb.com/sites/docs/dropdown-menu.html) for more details.
