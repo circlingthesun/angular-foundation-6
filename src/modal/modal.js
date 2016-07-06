@@ -294,12 +294,10 @@ angular.module('mm.foundation.modal', ['mm.foundation.mediaQueries'])
             // This allows for scrolling
             options.scope.$watch(() => modalDomEl[0].offsetHeight, resizeHandler);
 
-			promises.push($q(function () {
-				const focusedElem = (modalDomEl[0].querySelector('[autofocus]') || modalDomEl[0]);
-				focusedElem.focus();
-			}));
-
-            return $q.all(promises);
+            return $q.all(promises).then(function () {
+			    const focusedElem = (modalDomEl[0].querySelector('[autofocus]') || modalDomEl[0]);
+			    focusedElem.focus();
+			});
         });
     };
 
