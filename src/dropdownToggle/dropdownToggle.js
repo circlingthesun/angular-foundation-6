@@ -9,39 +9,47 @@ function DropdownToggleController($scope, $attrs, mediaQueries, $element, $posit
         $ctrl.css = {};
 
         if ($ctrl.closeOnClick) {
-            $body.off('click', close);
+            $body.off('click', closeOnClick);
         }
-
-        $scope.$apply();
     }
 
-    $ctrl.$onInit = function init() {
+    function open(e) {
+        $ctrl.active = true;
+        $ctrl.css = {};
+
+        positionPane(2);
+
         if ($ctrl.closeOnClick) {
-            $element.on('click', (e) => e.stopPropagation());
+            $body.on('click', closeOnClick);
         }
-    };
+    }
+
+    function closeOnClick(e) {
+        const elementContents = Array.prototype.slice.apply($element[0].querySelectorAll('*'));
+
+        if (!elementContents.length) {
+            return;
+        }
+
+        const isOuterElement = elementContents.every((node) => node !== e.target);
+
+        if (isOuterElement) {
+            close();
+            $scope.$apply();
+        }
+    }
 
     $ctrl.$onDestroy = function destroy() {
         if ($ctrl.closeOnClick) {
-            $body.off('click', close);
+            $body.off('click', closeOnClick);
         }
     };
 
     $ctrl.css = {};
 
     $ctrl.toggle = function() {
-        $ctrl.active = !$ctrl.active;
-        $ctrl.css = {};
-
-        if (!$ctrl.active) {
-            return;
-        }
-
-        positionPane(2);
-
-        if ($ctrl.closeOnClick) {
-            $body.on('click', close);
-        }
+        if ($ctrl.active) close();
+        else open();
     };
 
     $ctrl.mouseover = function() {
