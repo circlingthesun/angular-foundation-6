@@ -11,7 +11,7 @@ function DropdownToggleController($scope, $attrs, mediaQueries, $element, $posit
     }, $element.parent(), 'pane');
 
     $transclude((clone, tScope) => {
-        $element.find('span').append(clone);
+        $element.find('span:first').append(clone);
     }, $element.parent(), 'toggle');
 
     $timeout(() => {
